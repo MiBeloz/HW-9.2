@@ -12,17 +12,17 @@ Fraction::Fraction(const int _numerator, const int _denominator) {
     denominator = _denominator;
 }
 
-bool Fraction::operator<(const Fraction& other) {
+bool Fraction::operator<(const Fraction& other) const {
     int commonDenominator = findCommonDenominator(denominator, other.denominator);
     return (numerator * commonDenominator / denominator) < (other.numerator * commonDenominator / other.denominator);
 }
 
 bool Fraction::operator>(const Fraction& other) {
-    return !(*this < other);
+    return other < *this;
 }
 
-bool Fraction::operator<=(const Fraction& other) {
-    return *this < other;
+bool Fraction::operator<=(const Fraction& other) const {
+    return !(other < *this);
 }
 
 bool Fraction::operator>=(const Fraction& other) {
@@ -86,55 +86,32 @@ Fraction Fraction::operator/(const Fraction& other) {
 }
 
 Fraction Fraction::operator--() {
-    Fraction tempFraction(1, 1);
-    *this = *this - tempFraction;
+    numerator -= denominator;
     return *this;
 }
 
 Fraction Fraction::operator--(int) {
     Fraction tempFraction = *this;
-    *this = *this - 1;
+    numerator -= denominator;
     return tempFraction;
 }
 
 Fraction Fraction::operator++() {
-    Fraction tempFraction(1, 1);
-    *this = *this + tempFraction;
+    numerator += denominator;
     return *this;
 }
 
 Fraction Fraction::operator++(int) {
     Fraction tempFraction = *this;
-    *this = *this + 1;
+    numerator += denominator;
     return tempFraction;
 }
 
-int Fraction::findCommonDenominator(const int a, const int b) {
-    int x = a;
-    int y = b;
-    if (!(a % b)) {
-        return a;
-    }
-    else if (!(b % a)) {
-        return b;
-    }
-    else if (a > b) {
-        while (true) {
-            x += a;
-            if (!(x % b)) {
-                break;
-            }
+int Fraction::findCommonDenominator(const int a, const int b) const {
+    for (int i = a;; i++) {
+        if (!(i % a) && !(i % b)) {
+            return i;
         }
-        return x;
-    }
-    else {
-        while (true) {
-            y += b;
-            if (!(y % a)) {
-                break;
-            }
-        }
-        return y;
     }
 }
 
