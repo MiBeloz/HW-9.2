@@ -53,6 +53,7 @@ Fraction Fraction::operator+(const int other) {
 }
 
 Fraction Fraction::operator-(const Fraction& other) {
+    
     int commonDenominator = findCommonDenominator(denominator, other.denominator);
     int tempNumerator = (numerator * commonDenominator / denominator) - (other.numerator * commonDenominator / other.denominator);
     Fraction tempFraction(tempNumerator, commonDenominator);
@@ -116,21 +117,25 @@ int Fraction::findCommonDenominator(const int a, const int b) const {
 }
 
 void Fraction::reduceFraction(Fraction& other) {
-    int num{};
-    if (other.numerator < other.denominator) {
-        num = other.numerator;
-    }
-    else {
-        num = other.denominator;
-    }
+    int a{}, b{};
+    other.numerator > 0 ? a = other.numerator : a = other.numerator * -1;
+    other.denominator > 0 ? b = other.denominator : b = other.denominator * -1;
 
-    for (int i = num; i > 1; i--) {
-        if (!(other.numerator % i)) {
-            if (!(other.denominator % i)) {
-                other.numerator /= i;
-                other.denominator /= i;
+    if (a != 0) {
+        while (a != b && (a >= 0 || b >= 0)) {
+            if (a > b) {
+                a = a - b;
+            }
+            else {
+                b = b - a;
             }
         }
+
+        other.numerator /= a;
+        other.denominator /= a;
+    }
+    else {
+        other.denominator = 1;
     }
 }
 
