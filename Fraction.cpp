@@ -122,7 +122,7 @@ void Fraction::reduceFraction(Fraction& other) {
     other.denominator > 0 ? b = other.denominator : b = other.denominator * -1;
 
     if (a != 0) {
-        while (a != b && (a >= 0 || b >= 0)) {
+        while (a != b) {
             if (a > b) {
                 a = a - b;
             }
